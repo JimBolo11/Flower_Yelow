@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Para ti 🌻</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden}
+body{
+  font-family:Georgia,"Times New Roman",serif;
+  background:#03070a;
+  color:#fff;
+}
+.scene{
+  position:relative;width:100%;height:100%;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 22%,rgba(73,86,48,.28),transparent 28%),
+    linear-gradient(180deg,#03070e 0%,#071526 45%,#102313 76%,#061009 100%);
+}
+.scene::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse at center,transparent 45%,rgba(0,0,0,.55) 100%);
+  z-index:20;
+}
+
+/* estrellas */
+.stars,.fireflies,.petals{position:absolute;inset:0;pointer-events:none}
+.star{
+  position:absolute;width:2px;height:2px;border-radius:50%;background:#fff8c8;
+  box-shadow:0 0 7px #fff4a8;
+  animation:twinkle 2.5s ease-in-out infinite alternate;
+}
+@keyframes twinkle{0%{opacity:.15;transform:scale(.5)}100%{opacity:1;transform:scale(1.8)}}
+
+.moon{
+  position:absolute;top:7%;right:12%;width:74px;height:74px;border-radius:50%;
+  background:#fff8cf;
+  box-shadow:0 0 18px #fff6bd,0 0 55px rgba(255,239,145,.25);
+  z-index:1;
+}
+.moon:after{
+  content:"";position:absolute;width:74px;height:74px;border-radius:50%;
+  left:-14px;top:-5px;background:#071526;
+}
+
+/* introducción */
+.intro{
+  position:absolute;inset:0;z-index:30;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:28px;
+  background:linear-gradient(180deg,#02050a,#08140f);
+  transition:opacity 1.5s ease,visibility 1.5s;
+}
+.intro.hide{opacity:0;visibility:hidden;pointer-events:none}
+.intro .tiny{font-size:15px;letter-spacing:3px;color:#f7e89a;margin-bottom:18px}
+.intro h1{
+  margin:0;color:#ffe85b;font-size:clamp(32px,9vw,62px);
+  text-shadow:0 0 18px rgba(255,218,44,.5);
+}
+.intro p{font-size:17px;color:#eee8cf;margin:16px 0 28px}
+.open{
+  border:1px solid rgba(255,225,78,.65);
+  background:rgba(255,210,38,.12);color:#fff6bd;
+  padding:14px 27px;border-radius:999px;font-size:16px;
+  font-family:inherit;cursor:pointer;
+  box-shadow:0 0 25px rgba(255,209,34,.14);
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{50%{box-shadow:0 0 35px rgba(255,220,50,.38);transform:scale(1.03)}}
+
+/* mensaje */
+.message{
+  position:absolute;top:8%;left:50%;transform:translateX(-50%);
+  width:min(92%,800px);z-index:15;text-align:center;
+  opacity:0;transition:opacity 2s ease;
+}
+.message.show{opacity:1}
+.message .title{
+  color:#ffe45a;font-size:clamp(27px,7vw,49px);margin:0 0 14px;
+  text-shadow:0 0 16px rgba(255,210,30,.55);
+}
+.message .text{
+  font-size:clamp(15px,4vw,21px);line-height:1.6;
+  color:#fffbe4;text-shadow:0 2px 8px #000;
+}
+.message .heart{font-size:25px;margin-top:10px}
+
+/* suelo */
+.ground{
+  position:absolute;bottom:-11%;left:-5%;width:110%;height:28%;
+  background:radial-gradient(ellipse at 50% 0%,#183d18,#061008 70%);
+  border-radius:50% 50% 0 0;z-index:5;
+}
+
+/* flores */
+.flower{
+  position:absolute;bottom:7%;width:135px;height:235px;
+  transform-origin:bottom center;z-index:8;
+  animation:sway 5s ease-in-out infinite;
+}
+@keyframes sway{0%,100%{rotate:-2deg}50%{rotate:3deg}}
+.stem{
+  position:absolute;left:65px;bottom:0;width:6px;height:180px;
+  border-radius:10px;background:linear-gradient(90deg,#164b20,#4b9c32,#143e1b);
+}
+.leaf{
+  position:absolute;width:57px;height:25px;background:linear-gradient(135deg,#5aa83b,#1e6827);
+  border-radius:100% 0 100% 0;
+}
+.leaf.l{left:14px;bottom:70px;rotate:22deg}
+.leaf.r{left:69px;bottom:112px;transform:scaleX(-1) rotate(22deg)}
+.head{
+  position:absolute;left:15px;top:0;width:100px;height:100px;
+  animation:bloom 1.8s cubic-bezier(.2,.8,.2,1) both;
+}
+@keyframes bloom{0%{transform:scale(.05);opacity:0}75%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+.petal{
+  position:absolute;left:36px;top:2px;width:29px;height:51px;
+  transform-origin:14px 48px;
+  border-radius:60% 60% 45% 45%;
+  background:linear-gradient(180deg,#fff36b 0%,#ffd72b 55%,#f3b914 100%);
+  box-shadow:0 0 9px rgba(255,218,45,.32);
+}
+.center{
+  position:absolute;left:30px;top:30px;width:40px;height:40px;border-radius:50%;z-index:2;
+  background:radial-gradient(circle at 35% 28%,#a96c16,#512906 68%,#241300);
+  box-shadow:0 0 10px rgba(255,184,34,.4);
+}
+
+/* pétalos flotando */
+.petal-fall{
+  position:absolute;top:-30px;width:10px;height:16px;
+  background:#ffd83c;border-radius:80% 0 80% 0;opacity:.8;
+  animation:fall linear infinite;
+}
+@keyframes fall{
+  0%{transform:translateY(-30px) rotate(0deg);opacity:0}
+  12%{opacity:.9}
+  50%{transform:translateY(55vh) translateX(60px) rotate(180deg)}
+  100%{transform:translateY(110vh) translateX(-70px) rotate(360deg);opacity:0}
+}
+
+/* luciérnagas */
+.fly{
+  position:absolute;width:4px;height:4px;border-radius:50%;
+  background:#fff27a;box-shadow:0 0 13px 4px rgba(255,235,90,.35);
+  animation:fly 7s ease-in-out infinite;
+}
+@keyframes fly{
+  0%,100%{transform:translate(0,20px);opacity:0}
+  20%{opacity:1}
+  50%{transform:translate(60px,-90px);opacity:.8}
+  80%{opacity:1}
+}
+
+/* pie */
+.signature{
+  position:absolute;bottom:3%;left:50%;transform:translateX(-50%);
+  z-index:16;color:#fff2b0;font-size:13px;letter-spacing:1px;
+  opacity:0;transition:opacity 2s;
+}
+.signature.show{opacity:.9}
+
+@media(max-width:600px){
+  .moon{right:7%;top:6%;width:58px;height:58px}
+  .moon:after{width:58px;height:58px}
+  .message{top:7%}
+  .message .text{line-height:1.5}
+  .flower{transform:scale(.78);bottom:5%}
+  .flower:nth-child(odd){transform:scale(.65)}
+}
+</style>
+</head>
+<body>
+<div class="scene">
+
+  <div class="stars" id="stars"></div>
+  <div class="moon"></div>
+  <div class="fireflies" id="flies"></div>
+  <div class="petals" id="petals"></div>
+
+  <div class="intro" id="intro">
+    <div class="tiny">UNA PEQUEÑA SORPRESA</div>
+    <h1>Para ti 🌻</h1>
+    <p>Hay algo que quería regalarte...</p>
+    <button class="open" onclick="openSurprise()">Abrir mi sorpresa 💛</button>
+  </div>
+
+  <div class="message" id="message">
+    <div class="title">Feliz día de las flores amarillas 🌻</div>
+    <div class="text">
+      Quizá no lo esperabas de mí, pero hay detalles que simplemente nacen del corazón.<br>
+      Dicen que a las niñas bonitas se les consiente, pero tú mereces mucho más:<br>
+      flores tan bonitas como la mujer que las inspira. 💛
+    </div>
+    <div class="heart">♡</div>
+  </div>
+
+  <div id="flowers"></div>
+  <div class="ground"></div>
+  <div class="signature" id="signature">Con cariño, para alguien muy especial ✨</div>
+</div>
+
+<script>
+function addStars(){
+  const box=document.getElementById('stars');
+  for(let i=0;i<65;i++){
+    const s=document.createElement('i');
+    s.className='star';
+    s.style.left=Math.random()*100+'%';
+    s.style.top=Math.random()*70+'%';
+    s.style.animationDelay=Math.random()*3+'s';
+    s.style.animationDuration=(1.5+Math.random()*3)+'s';
+    box.appendChild(s);
+  }
+}
+
+function addFlies(){
+  const box=document.getElementById('flies');
+  for(let i=0;i<18;i++){
+    const f=document.createElement('i');
+    f.className='fly';
+    f.style.left=(Math.random()*100)+'%';
+    f.style.top=(48+Math.random()*43)+'%';
+    f.style.animationDelay=Math.random()*7+'s';
+    f.style.animationDuration=(5+Math.random()*5)+'s';
+    box.appendChild(f);
+  }
+}
+
+function addPetals(){
+  const box=document.getElementById('petals');
+  for(let i=0;i<20;i++){
+    const p=document.createElement('i');
+    p.className='petal-fall';
+    p.style.left=Math.random()*100+'%';
+    p.style.animationDelay=Math.random()*9+'s';
+    p.style.animationDuration=(7+Math.random()*7)+'s';
+    p.style.transform=`scale(${.5+Math.random()*.8})`;
+    box.appendChild(p);
+  }
+}
+
+function createFlower(data,index){
+  const f=document.createElement('div');
+  f.className='flower';
+  f.style.left=data.x+'%';
+  f.style.bottom=data.b+'%';
+  f.style.transform=`scale(${data.s})`;
+  f.style.animationDelay=data.delay+'s';
+
+  const stem=document.createElement('div'); stem.className='stem';
+  const l=document.createElement('div'); l.className='leaf l';
+  const r=document.createElement('div'); r.className='leaf r';
+  const head=document.createElement('div'); head.className='head';
+  head.style.animationDelay=(.5+index*.18)+'s';
+
+  for(let i=0;i<12;i++){
+    const p=document.createElement('div');
+    p.className='petal';
+    p.style.transform=`rotate(${i*30}deg)`;
+    head.appendChild(p);
+  }
+  const c=document.createElement('div'); c.className='center';
+  head.appendChild(c);
+
+  f.append(stem,l,r,head);
+  document.getElementById('flowers').appendChild(f);
+}
+
+function growFlowers(){
+  const flowers=[
+    {x:4,b:5,s:.60,delay:.2},
+    {x:15,b:5,s:.76,delay:.5},
+    {x:28,b:7,s:.92,delay:.8},
+    {x:43,b:5,s:1.08,delay:.1},
+    {x:58,b:6,s:.90,delay:.7},
+    {x:72,b:5,s:.75,delay:.3},
+    {x:84,b:5,s:.62,delay:.9}
+  ];
+  flowers.forEach((x,i)=>createFlower(x,i));
+}
+
+function openSurprise(){
+  document.getElementById('intro').classList.add('hide');
+  setTimeout(()=>document.getElementById('message').classList.add('show'),1100);
+  setTimeout(()=>document.getElementById('signature').classList.add('show'),2600);
+  growFlowers();
+}
+
+addStars();
+addFlies();
+addPetals();
+</script>
+</body>
+</html>
